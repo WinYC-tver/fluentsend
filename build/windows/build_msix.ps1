@@ -1,7 +1,7 @@
 #!/usr/bin/env pwsh
 <#
 .SYNOPSIS
-构建 FluentSend Windows MSIX 包（商店就绪）。需要 Windows SDK 的 makepkg 工具。
+构建 FluentSend Windows MSIX 包（商店就绪）。需要 Windows SDK 的 makeappx 工具。
 .PARAMETER OutDir
 输出目录，默认为 build 脚本上级的根。
 .PARAMETER Pfx
@@ -19,18 +19,29 @@ param(
 
 $ErrorActionPreference = "Stop"
 $Root  = Resolve-Path "$PSScriptRoot\..\.."
+$RustProj = Join-Path $Root "src\FluentSend.Core.Native"
 $ManifestSrc = Join-Path $PSScriptRoot "msix\AppxManifest.xml"
 $Stage = Join-Path $OutDir "msix-stage"
 $Msix  = Join-Path $OutDir "fluentsend-0.45.0-$Rid.msix"
 
-Write-Host "[1/5] 清理并创建暂存目录..."
+Write-Host "[1/6] 清理并创建暂存目录..."
 if (Test-Path $Stage) { Remove-Item $Stage -Recurse -Force }
 New-Item -ItemType Directory -Force -Path $Stage | Out-Null
 $assetsDir = Join-Path $Stage "Assets"
 New-Item -ItemType Directory -Force -Path $assetsDir | Out-Null
 
-Write-Host "[2/5] 发布桌面应用..."
+Write-Host "[2/6] 构建 Rust cdylib (fluentsend_core.dll)..."
+Push-Location $RustProj
+try {
+    cargo build --release
+    if ($LASTEXITCODE -ne 0) { throw "cargo build 失败 ($LASTEXITCODE)" }
+} finally { Pop-Location }
+$rustDll = Join-Path $RustProj "target\release\fluentsend_core.dll"
+if (-not (Test-Path $rustDll)) { throw "未找到 Rust 构建产物: $rustDll" }
+
+Write-Host "[3/6] 发布桌面应用..."
 $publishDir = Join-Path $OutDir "publish\$Rid"
+if (Test-Path $publishDir) { Remove-Item $publishDir -Recurse -Force }
 dotnet publish (Join-Path $Root "src\FluentSend\FluentSend.Desktop\FluentSend.Desktop.csproj") `
     -c $Config -f net10.0 -r $Rid --self-contained true `
     -p:PublishSingleFile=$true `
@@ -38,19 +49,25 @@ dotnet publish (Join-Path $Root "src\FluentSend\FluentSend.Desktop\FluentSend.De
     -o $publishDir
 if ($LASTEXITCODE -ne 0) { throw "publish 失败" }
 
-Write-Host "[3/5] 整理 MSIX 结构..."
+Write-Host "[4/6] 整理 MSIX 结构..."
 Copy-Item -Path "$publishDir\*" -Destination $Stage -Recurse -Force
+Copy-Item -Path $rustDll -Destination (Join-Path $Stage "fluentsend_core.dll") -Force
 Copy-Item -Path $ManifestSrc -Destination $Stage -Force
-Copy-Item -Path (Join-Path $Root "src\FluentSend\FluentSend\Assets\Icon.png") -Destination $assetsDir -Force
+$iconSrc = Join-Path $Root "src\FluentSend\FluentSend\Assets\Icon.png"
+if (Test-Path $iconSrc) {
+    Copy-Item -Path $iconSrc -Destination $assetsDir -Force
+}
+Copy-Item -Path (Join-Path $Root "LICENSE") -Destination $Stage -Force
 
-Write-Host "[4/5] 生成 msix (MakeAppx)..."
+Write-Host "[5/6] 生成 msix (MakeAppx)..."
+if (Test-Path $Msix) { Remove-Item $Msix -Force }
 $makeAppx = Get-ChildItem "${env:ProgramFiles(x86)}\Windows Kits\10\bin\*\x64\makeappx.exe" `
     -ErrorAction SilentlyContinue | Sort-Object Name -Descending | Select-Object -First 1
 if (-not $makeAppx) { throw "未找到 makeappx.exe，请安装 Windows SDK" }
 & $makeAppx.FullName pack /d $Stage /p $Msix /v
 if ($LASTEXITCODE -ne 0) { throw "MakeAppx pack 失败" }
 
-Write-Host "[5/5] 签名（可选）..."
+Write-Host "[6/6] 签名（可选）..."
 if ($Pfx -and (Test-Path $Pfx)) {
     $signtool = Get-ChildItem "${env:ProgramFiles(x86)}\Windows Kits\10\bin\*\x64\signtool.exe" `
         -ErrorAction SilentlyContinue | Sort-Object Name -Descending | Select-Object -First 1
@@ -62,5 +79,6 @@ if ($Pfx -and (Test-Path $Pfx)) {
     Write-Warning "未提供证书 (-Pfx)，输出未签名 msix，不能直接安装"
 }
 
-Write-Host "完成：$Msix"
+$size = [math]::Round((Get-Item $Msix).Length / 1MB, 2)
+Write-Host "完成：$Msix ($size MB)"
 return $Msix

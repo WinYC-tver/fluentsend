@@ -39,7 +39,7 @@
                 BackgroundColor="transparent"
                 Square150x150Logo="Assets\Icon.png"
                 Square44x44Logo="Assets\Icon.png">
-                <uap:DefaultTile Wide310x310Logo="Assets\Icon.png"
+                <uap:DefaultTile Wide310x150Logo="Assets\Icon.png"
                                  Square310x310Logo="Assets\Icon.png"
                                  ShortName="FluentSend">
                     <uap:ShowNameOnTiles>
@@ -50,13 +50,6 @@
                 <uap:SplashScreen Image="Assets\Icon.png" />
             </uap:VisualElements>
             <Extensions>
-                <uap:Extension Category="windows.fileTypeAssociation">
-                    <uap:FileTypeAssociation Name="anyfile">
-                        <uap:SupportedFileTypes>
-                            <uap:FileType ContentType="application/octet-stream">.*</uap:FileType>
-                        </uap:SupportedFileTypes>
-                    </uap:FileTypeAssociation>
-                </uap:Extension>
                 <desktop:Extension Category="windows.fullTrustProcess" />
             </Extensions>
         </Application>
