@@ -1,0 +1,27 @@
+[package]
+name = "fluentsend-core-native"
+version = "0.45.0-alpha"
+edition = "2021"
+license = "Apache-2.0"
+description = "FluentSend C-ABI shim over the original LocalSend Rust core"
+build = "build.rs"
+
+[lib]
+name = "fluentsend_core"
+crate-type = ["cdylib", "staticlib"]
+
+[dependencies]
+localsend = { path = "../../localsend/packages/core", features = ["full"] }
+tokio = { version = "1", features = ["full"] }
+tokio-util = "0.7"
+once_cell = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[build-dependencies]
+cbindgen = "0.29"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1

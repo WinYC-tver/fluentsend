@@ -1,0 +1,16 @@
+[Desktop Entry]
+Version=1.5
+Type=Application
+Name=FluentSend
+GenericName=File Transfer
+Comment=你的最后一款文件传输软件 — 离线跨平台文件传输，兼容 LocalSend 协议
+Comment[zh_CN]=你的最后一款文件传输软件 — 离线跨平台文件传输，兼容 LocalSend 协议
+Icon=fluentsend
+Exec=fluentsend
+TryExec=/usr/bin/fluentsend
+Terminal=false
+Categories=Network;FileTransfer;Utility;
+Keywords=file;send;receive;transfer;localsend;lan;share;fluentsend;
+StartupWMClass=FluentSend
+StartupNotify=true
+MimeType=application/octet-stream;text/plain;

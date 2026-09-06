@@ -1,0 +1,133 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:vm="using:FluentSend.ViewModels"
+                xmlns:pages="using:FluentSend.Views.Pages"
+                xmlns:views="using:FluentSend.Views"
+                xmlns:local="using:FluentSend"
+                xmlns:fa="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+                mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="650"
+                x:Class="FluentSend.Views.MainView"
+                x:DataType="vm:MainViewModel">
+
+    <UserControl.Resources>
+        <local:BoolToPaneModeConverter x:Key="BoolToPaneModeConverter" />
+    </UserControl.Resources>
+
+    <Grid>
+        <fa:FANavigationView
+            x:Name="NavView"
+            IsVisible="{Binding !IsMobile}"
+            IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}"
+            PaneDisplayMode="{Binding UseTopNav, Converter={StaticResource BoolToPaneModeConverter}}"
+            Header="{Binding SelectedPageTitle}"
+            IsBackButtonVisible="False"
+            SelectionChanged="OnSelectionChanged">
+
+            <fa:FANavigationView.MenuItems>
+                <fa:FANavigationViewItem Content="首页" Tag="home">
+                    <fa:FANavigationViewItem.IconSource>
+                        <fa:FAPathIconSource Data="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                    </fa:FANavigationViewItem.IconSource>
+                </fa:FANavigationViewItem>
+                <fa:FANavigationViewItem Content="文件" Tag="files">
+                    <fa:FANavigationViewItem.IconSource>
+                        <fa:FAPathIconSource Data="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z" />
+                    </fa:FANavigationViewItem.IconSource>
+                </fa:FANavigationViewItem>
+                <fa:FANavigationViewItem Content="设置" Tag="settings">
+                    <fa:FANavigationViewItem.IconSource>
+                        <fa:FAPathIconSource Data="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.62l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.25-.42-.5-.42h-3.84c-.25 0-.46.18-.5.42l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.07.48.12.62l2.03 1.58c-.05.3-.09.62-.09.94 0 .32.04.64.09.94l-2.03 1.58c-.18.14-.23.41-.12.62l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.04.24.25.42.5.42h3.84c.25 0 .46-.18.5-.42l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.21.06-.48-.12-.62l-2.03-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" />
+                    </fa:FANavigationViewItem.IconSource>
+                </fa:FANavigationViewItem>
+            </fa:FANavigationView.MenuItems>
+
+            <fa:FANavigationView.FooterMenuItems>
+                <fa:FANavigationViewItem Content="关于" Tag="about">
+                    <fa:FANavigationViewItem.IconSource>
+                        <fa:FAPathIconSource Data="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 2s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" />
+                    </fa:FANavigationViewItem.IconSource>
+                </fa:FANavigationViewItem>
+            </fa:FANavigationView.FooterMenuItems>
+
+            <ContentControl Content="{Binding CurrentPage}">
+                <ContentControl.DataTemplates>
+                    <DataTemplate DataType="{x:Type vm:HomePageViewModel}">
+                        <pages:HomePageView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:FilesPageViewModel}">
+                        <pages:FilesPageView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:SettingsPageViewModel}">
+                        <pages:SettingsPageView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:AboutPageViewModel}">
+                        <pages:AboutPageView />
+                    </DataTemplate>
+                </ContentControl.DataTemplates>
+            </ContentControl>
+        </fa:FANavigationView>
+
+        <Grid IsVisible="{Binding IsMobile}" RowDefinitions="*, Auto">
+            <ContentControl Grid.Row="0" Content="{Binding CurrentPage}">
+                <ContentControl.DataTemplates>
+                    <DataTemplate DataType="{x:Type vm:HomePageViewModel}">
+                        <pages:HomePageView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:FilesPageViewModel}">
+                        <pages:FilesPageView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:SettingsPageViewModel}">
+                        <pages:SettingsPageView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:AboutPageViewModel}">
+                        <pages:AboutPageView />
+                    </DataTemplate>
+                </ContentControl.DataTemplates>
+            </ContentControl>
+
+            <Border Grid.Row="1" Background="{DynamicResource ControlFillColorDefaultBrush}"
+                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                    BorderThickness="0,1,0,0" Padding="8,4">
+                <Grid ColumnDefinitions="*, *, *, *">
+                    <Button Grid.Column="0" Click="OnMobileNavClick" Tag="home"
+                            HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                            Padding="0,8" Background="Transparent" BorderThickness="0">
+                        <StackPanel Spacing="2">
+                            <PathIcon Data="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" Width="22" Height="22" HorizontalAlignment="Center" />
+                            <TextBlock Text="首页" FontSize="11" HorizontalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                    <Button Grid.Column="1" Click="OnMobileNavClick" Tag="files"
+                            HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                            Padding="0,8" Background="Transparent" BorderThickness="0">
+                        <StackPanel Spacing="2">
+                            <PathIcon Data="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z" Width="22" Height="22" HorizontalAlignment="Center" />
+                            <TextBlock Text="文件" FontSize="11" HorizontalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                    <Button Grid.Column="2" Click="OnMobileNavClick" Tag="settings"
+                            HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                            Padding="0,8" Background="Transparent" BorderThickness="0">
+                        <StackPanel Spacing="2">
+                            <PathIcon Data="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.62l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.25-.42-.5-.42h-3.84c-.25 0-.46.18-.5.42l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.07.48.12.62l2.03 1.58c-.05.3-.09.62-.09.94 0 .32.04.64.09.94l-2.03 1.58c-.18.14-.23.41-.12.62l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.04.24.25.42.5.42h3.84c.25 0 .46-.18.5-.42l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.21.06-.48-.12-.62l-2.03-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" Width="22" Height="22" HorizontalAlignment="Center" />
+                            <TextBlock Text="设置" FontSize="11" HorizontalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                    <Button Grid.Column="3" Click="OnMobileNavClick" Tag="about"
+                            HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                            Padding="0,8" Background="Transparent" BorderThickness="0">
+                        <StackPanel Spacing="2">
+                            <PathIcon Data="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 2s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" Width="22" Height="22" HorizontalAlignment="Center" />
+                            <TextBlock Text="关于" FontSize="11" HorizontalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <views:ReceiveOverlayView DataContext="{Binding ReceiveOverlay}"
+                                  IsHitTestVisible="True" />
+    </Grid>
+</UserControl>

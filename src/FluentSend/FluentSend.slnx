@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="FluentSend.Interop/FluentSend.Interop.csproj" />
+  <Project Path="FluentSend.Android/FluentSend.Android.csproj">
+    <Deploy />
+  </Project>
+  <Project Path="FluentSend.Desktop/FluentSend.Desktop.csproj" />
+  <Project Path="FluentSend/FluentSend.csproj" />
+</Solution>

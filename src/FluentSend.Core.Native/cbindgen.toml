@@ -1,0 +1,23 @@
+language = "c"
+include_guard = "FLUENTSEND_CORE_H"
+trailing = "semicolon"
+no_includes = false
+
+# Only generate the C-facing surface; keep all Rust-internal helpers
+# (json_util, ServerRegistry, SendPtr, HandleData) private to the crate.
+[export]
+include = [
+    "FsHandle",
+    "FsEventCallback",
+    "FsProgressCallback",
+    "fs_generate_identity",
+    "fs_free_string",
+    "fs_discovery_start",
+    "fs_discovery_announce",
+    "fs_discovery_stop",
+    "fs_discovery_devices",
+    "fs_server_start",
+    "fs_server_respond",
+    "fs_server_file_target",
+    "fs_send_files",
+]

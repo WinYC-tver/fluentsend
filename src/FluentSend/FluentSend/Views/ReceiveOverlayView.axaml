@@ -1,0 +1,86 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fa="https://github.com/amwx/FluentAvalonia"
+             xmlns:vm="using:FluentSend.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="FluentSend.Views.ReceiveOverlayView"
+             x:DataType="vm:ReceiveOverlayViewModel">
+
+    <UserControl.Styles>
+        <Style Selector="Button.overlayBtn">
+            <Setter Property="Padding" Value="24,10" />
+            <Setter Property="MinWidth" Value="120" />
+            <Setter Property="CornerRadius" Value="6" />
+        </Style>
+    </UserControl.Styles>
+
+    <Panel IsVisible="{Binding IsVisible}">
+        <Border Background="#88000000" />
+        <Border HorizontalAlignment="Center" VerticalAlignment="Center"
+                Background="{DynamicResource ControlFillColorDefaultBrush}"
+                BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1" CornerRadius="12" Padding="32" MinWidth="480" MaxWidth="640">
+            <Grid RowDefinitions="Auto, Auto, Auto, *, Auto, Auto" Margin="0,0,0,0">
+
+                <PathIcon Grid.Row="0" Data="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"
+                          Width="40" Height="40" HorizontalAlignment="Center"
+                          Foreground="{DynamicResource AccentFillColorDefaultBrush}" />
+
+                <TextBlock Grid.Row="1" Text="收到文件传输请求"
+                           FontSize="20" FontWeight="SemiBold"
+                           HorizontalAlignment="Center" Margin="0,8,0,4" />
+
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8" Margin="0,0,0,16">
+                    <TextBlock Text="来自：" Opacity="0.7" />
+                    <TextBlock Text="{Binding SenderAlias}" FontWeight="SemiBold" />
+                </StackPanel>
+
+                <Border Grid.Row="3" Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}"
+                        BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1" CornerRadius="8" Padding="4" Margin="0,0,0,16">
+                    <ScrollViewer MaxHeight="240">
+                        <ItemsControl ItemsSource="{Binding Files}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="8,4" ColumnDefinitions="Auto, *, Auto">
+                                        <PathIcon Grid.Column="0" Width="20" Height="20"
+                                                  Data="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
+                                        <TextBlock Grid.Column="1" Text="{Binding FileName}"
+                                                   Margin="12,0,0,0" VerticalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis" />
+                                        <TextBlock Grid.Column="2" Text="{Binding SizeText}"
+                                                   VerticalAlignment="Center" Opacity="0.6" FontSize="12" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Border>
+
+                <Border Grid.Row="4" Background="{DynamicResource ControlFillColorDefaultBrush}"
+                        BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1" CornerRadius="6" Padding="12,8" Margin="0,0,0,16">
+                    <Grid ColumnDefinitions="Auto, *, Auto">
+                        <PathIcon Grid.Column="0" Width="16" Height="16"
+                                  Data="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z" />
+                        <TextBlock Grid.Column="1" Text="{Binding SavePath}"
+                                   Margin="8,0,0,0" VerticalAlignment="Center"
+                                   TextTrimming="CharacterEllipsis" />
+                        <Button Grid.Column="2" Content="编辑" Padding="12,4" Click="OnEditSavePath" />
+                    </Grid>
+                </Border>
+
+                <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="12">
+                    <Button Content="取消" Command="{Binding DeclineCommand}"
+                            Classes="overlayBtn" />
+                    <Button Content="确认接收" Command="{Binding AcceptCommand}"
+                            Classes="overlayBtn"
+                            Background="{DynamicResource AccentFillColorDefaultBrush}"
+                            Foreground="White" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Panel>
+</UserControl>

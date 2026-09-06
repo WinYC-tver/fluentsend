@@ -1,0 +1,79 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:FluentSend.ViewModels"
+             xmlns:fa="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="600"
+             x:Class="FluentSend.Views.Pages.SettingsPageView"
+             x:DataType="vm:SettingsPageViewModel">
+
+    <ScrollViewer>
+        <StackPanel Spacing="8" Margin="24,8">
+            <TextBlock Text="设置" FontSize="28" FontWeight="SemiBold" Margin="0,0,0,16" />
+
+            <fa:FASettingsExpander Header="常规" Description="基本设置">
+                <fa:FASettingsExpander.Items>
+                    <fa:FASettingsExpander Header="设备名称" Description="其他设备看到的名称">
+                        <TextBox Text="{Binding DeviceName, Mode=TwoWay}" MinWidth="200" />
+                    </fa:FASettingsExpander>
+                    <fa:FASettingsExpander Header="下载位置" Description="接收文件的保存路径">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <TextBox Grid.Column="0" Text="{Binding DownloadPath, Mode=TwoWay}" MinWidth="280" IsReadOnly="True" />
+                            <Button Grid.Column="1" Content="浏览..." Padding="12,4" Margin="8,0,0,0" Click="OnBrowseDownloadPath" />
+                        </Grid>
+                    </fa:FASettingsExpander>
+                    <fa:FASettingsExpander Header="开机自启" Description="系统启动时自动运行">
+                        <ToggleSwitch IsChecked="{Binding AutoStart, Mode=TwoWay}" />
+                    </fa:FASettingsExpander>
+                    <fa:FASettingsExpander Header="快捷键" Description="显示快捷方式窗口的热键">
+                        <TextBox Text="{Binding HotkeyText, Mode=TwoWay}" MinWidth="120" />
+                    </fa:FASettingsExpander>
+                </fa:FASettingsExpander.Items>
+            </fa:FASettingsExpander>
+
+            <fa:FASettingsExpander Header="外观" Description="主题和窗口效果">
+                <fa:FASettingsExpander.Items>
+                    <fa:FASettingsExpander Header="主题" Description="深色/浅色/跟随系统">
+                        <ComboBox SelectedIndex="{Binding ThemeIndex}" MinWidth="120">
+                            <ComboBoxItem Content="跟随系统" />
+                            <ComboBoxItem Content="浅色" />
+                            <ComboBoxItem Content="深色" />
+                        </ComboBox>
+                    </fa:FASettingsExpander>
+                    <fa:FASettingsExpander Header="窗口效果" Description="云母/亚克力/无">
+                        <ComboBox SelectedIndex="{Binding BackdropIndex}" MinWidth="120">
+                            <ComboBoxItem Content="云母" />
+                            <ComboBoxItem Content="薄云母" />
+                            <ComboBoxItem Content="亚克力" />
+                            <ComboBoxItem Content="无" />
+                        </ComboBox>
+                    </fa:FASettingsExpander>
+                    <fa:FASettingsExpander Header="强调色" Description="界面主色调 (十六进制)">
+                        <TextBox Text="{Binding AccentColorHex, Mode=TwoWay}" MinWidth="120" />
+                    </fa:FASettingsExpander>
+                </fa:FASettingsExpander.Items>
+            </fa:FASettingsExpander>
+
+            <fa:FASettingsExpander Header="高级" Description="网络与安全">
+                <fa:FASettingsExpander.Items>
+                    <fa:FASettingsExpander Header="端口" Description="HTTP 服务监听端口">
+                        <fa:FANumberBox Value="{Binding ServerPort}" Minimum="1024" Maximum="65535" MinWidth="120" />
+                    </fa:FASettingsExpander>
+                    <fa:FASettingsExpander Header="协议" Description="HTTPS / HTTP">
+                        <ComboBox SelectedIndex="{Binding ProtocolIndex}" MinWidth="120">
+                            <ComboBoxItem Content="HTTPS" />
+                            <ComboBoxItem Content="HTTP" />
+                        </ComboBox>
+                    </fa:FASettingsExpander>
+                    <fa:FASettingsExpander Header="PIN 码" Description="接收时要求输入 PIN 码">
+                        <TextBox Text="{Binding Pin}" MinWidth="120" />
+                    </fa:FASettingsExpander>
+                    <fa:FASettingsExpander Header="校验和验证" Description="验证文件完整性">
+                        <ToggleSwitch IsChecked="{Binding VerifyChecksums, Mode=TwoWay}" />
+                    </fa:FASettingsExpander>
+                </fa:FASettingsExpander.Items>
+            </fa:FASettingsExpander>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

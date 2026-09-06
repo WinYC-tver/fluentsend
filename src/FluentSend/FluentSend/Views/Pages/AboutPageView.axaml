@@ -1,0 +1,50 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fa="https://github.com/amwx/FluentAvalonia"
+             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="600"
+             x:Class="FluentSend.Views.Pages.AboutPageView"
+             x:DataType="vm:AboutPageViewModel"
+             xmlns:vm="using:FluentSend.ViewModels">
+
+    <ScrollViewer>
+        <StackPanel Spacing="12" Margin="24" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <PathIcon Data="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" Width="64" Height="64" HorizontalAlignment="Center" />
+
+            <TextBlock Text="FluentSend" FontSize="32" FontWeight="SemiBold"
+                       HorizontalAlignment="Center" />
+
+            <TextBlock Text="你的最后一款文件传输软件" FontSize="14"
+                       Opacity="0.7" HorizontalAlignment="Center" />
+
+            <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1" CornerRadius="8"
+                    Padding="24" Margin="0,16,0,0" MinWidth="360">
+                <StackPanel Spacing="6">
+                    <Grid ColumnDefinitions="120, *">
+                        <TextBlock Grid.Column="0" Text="版本" Opacity="0.7" />
+                        <TextBlock Grid.Column="1" Text="v0.45.0-alpha" />
+                    </Grid>
+                    <Grid ColumnDefinitions="120, *">
+                        <TextBlock Grid.Column="0" Text="版权" Opacity="0.7" />
+                        <TextBlock Grid.Column="1" Text="Copyright © 2026 HZStudio" />
+                    </Grid>
+                    <Grid ColumnDefinitions="120, *">
+                        <TextBlock Grid.Column="0" Text="开源协议" Opacity="0.7" />
+                        <TextBlock Grid.Column="1" Text="Apache 2.0" />
+                    </Grid>
+                    <Grid ColumnDefinitions="120, *">
+                        <TextBlock Grid.Column="0" Text="基于" Opacity="0.7" />
+                        <TextBlock Grid.Column="1" Text="LocalSend (localsend/localsend)" />
+                    </Grid>
+                    <Grid ColumnDefinitions="120, *">
+                        <TextBlock Grid.Column="0" Text="项目地址" Opacity="0.7" />
+                        <TextBlock Grid.Column="1" Text="github.com/WinYC-tver/fluentsend" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

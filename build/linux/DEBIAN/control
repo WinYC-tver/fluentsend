@@ -1,0 +1,24 @@
+Package: fluentsend
+Version: 0.45.0
+Architecture: amd64
+Maintainer: HZStudio <support@hzstudio.com>
+Installed-Size: 60000
+Depends: libssl3 | libssl1.1, ca-certificates, libc6 (>= 2.31), libgcc-s1 (>= 10)
+Recommends: desktop-file-utils, shared-mime-info
+Suggests: xdg-utils, notification-daemon
+Conflicts: fluentsend-git
+Replaces: fluentsend-git
+Provides: fluentsend
+Section: net
+Priority: optional
+Description: FluentSend — 你的最后一款文件传输软件
+ FluentSend 是基于 LocalSend 协议的跨平台离线文件传输软件。
+ 支持 Windows、Linux 与 Android，能在所有平台保持一致的体验。
+ 兼容 LocalSend 原版，局域网内自动发现，文本/文件/文件夹/剪贴板互发。
+ .
+ 主要特性：
+  * 完全离线，无需联网或第三方服务器
+  * 兼容 LocalSend v2/v3 协议与第三方实现
+  * Fluent Design 2 界面（云母、亚克力等材质）
+  * 收件全屏弹窗、文件历史、跨平台一致
+  * Apache-2.0 协议开源，Copyright © 2026 HZStudio

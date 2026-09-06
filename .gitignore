@@ -1,0 +1,135 @@
+# ============================================================================
+# FluentSend .gitignore
+# ============================================================================
+
+# ----- .NET / C# -----
+**/bin/
+**/obj/
+**/publish/
+*.user
+*.suo
+*.userprefs
+*.csproj.user
+*.pidb
+*.svclog
+*.scc
+*.vspscc
+*.vshascc
+project.lock.json
+project.fragment.lock.json
+project.fragment.cachefile
+*.projectAssets.json
+*.nuget.props
+*.nuget.targets
+.nuget/
+*.nupkg
+*.snupkg
+**/Packages/
+*.wadwarn
+*.warncache
+*.warncachedata
+*.cache
+*.tlog
+
+# ----- Visual Studio / Rider / VSCode -----
+.vs/
+.vscode/
+.idea/
+*.DotSettings.user
+*.swp
+*~
+
+# ----- Avalonia / .NET Build outputs -----
+*.apk
+*.aab
+*.msix
+*.msixupload
+*.msixbundle
+*.appinstaller
+*.pfx
+*.cer
+*.pvk
+*.snk
+*_i.c
+*_p.c
+*_h.h
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.pdb
+*.ipdb
+*.idb
+*.lib
+*.exp
+*.map
+
+# ----- Rust -----
+**/target/
+**/Cargo.lock
+*.rs.bk
+*.rlib
+*.dll.lib
+*.pdb
+
+# ----- Rust cdylib outputs (generated) -----
+fluentsend_core.dll
+fluentsend_core.so
+libfluentsend_core.so
+libfluentsend_core.dylib
+fluentsend_core.h
+
+# ----- Build artifacts & release packages -----
+*.zip
+*.tar.gz
+*.7z
+*.deb
+*.rpm
+*.exe
+!build/**/*.sh
+!build/**/*.ps1
+build/artifacts/
+build/staging/
+build/output/
+
+# ----- LocalSend reference repo internal build cache (keep source) -----
+localsend/.git/
+localsend/.github/
+localsend/.gitmodules
+localsend/.fvmrc
+localsend/.packages/
+localsend/app/build/
+localsend/app/.dart_tool/
+localsend/app/.flutter-plugins
+localsend/app/.flutter-plugins-dependencies
+localsend/cli/target/
+localsend/server/target/
+localsend/support/build/
+localsend/support/.dart_tool/
+localsend/fastlane/
+
+# ----- Local IDE / specs / runtime cache (private) -----
+.trae/
+reflect/
+*.local.json
+*.log
+logs/
+tmp/
+temp/
+
+# ----- OS files -----
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+*.lnk
+
+# ----- Certificates & secrets (do not ship) -----
+*.p12
+*.key
+cert.pem
+key.pem
+*.crt
+secrets.json

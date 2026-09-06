@@ -1,0 +1,92 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fa="https://github.com/amwx/FluentAvalonia"
+             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="600"
+             x:Class="FluentSend.Views.Pages.HomePageView"
+             x:DataType="vm:HomePageViewModel"
+             xmlns:vm="using:FluentSend.ViewModels">
+
+    <Grid RowDefinitions="Auto, *">
+        <TextBlock Grid.Row="0" Text="附近设备" FontSize="24" FontWeight="SemiBold"
+                   Margin="24,8,24,16" />
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="320" MinWidth="200" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1" CornerRadius="8" Margin="12,0,6,12">
+                <Grid RowDefinitions="Auto, *, Auto">
+                    <TextBlock Grid.Row="0" Text="设备列表" FontWeight="SemiBold" Margin="12" />
+                    <ListBox Grid.Row="1" x:Name="DeviceList"
+                             ItemsSource="{Binding Devices}"
+                             SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
+                             Margin="4">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Spacing="12" Margin="8">
+                                    <PathIcon Data="M3 5h18v11H3V5zm0 13h18v2H3v-2zM11 2h2v3h-2V2z" Width="24" Height="24" />
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Alias}" FontWeight="SemiBold" />
+                                        <TextBlock Text="{Binding DeviceType}" Opacity="0.6" FontSize="12" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="8" Margin="12" HorizontalAlignment="Center">
+                        <Button Content="刷新" Command="{Binding RefreshCommand}" />
+                        <ToggleSwitch IsChecked="{Binding IsDiscovering, Mode=TwoWay}" OnContent="发现中" OffContent="已停止" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="1" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1" CornerRadius="8" Margin="6,0,12,12">
+                <Grid RowDefinitions="*, Auto">
+                    <ScrollViewer Grid.Row="0" Padding="16">
+                        <ItemsControl ItemsSource="{Binding Messages}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="{DynamicResource AccentFillColorDefaultBrush}"
+                                            CornerRadius="12" Padding="12,8" Margin="0,4"
+                                            HorizontalAlignment="Right">
+                                        <TextBlock Text="{Binding Text}" TextWrapping="Wrap" MaxWidth="360"
+                                                   Foreground="White" />
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                    <Grid Grid.Row="1" Margin="16,0,16,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Text="{Binding MessageText, Mode=TwoWay}"
+                                 PlaceholderText="输入消息..." AcceptsReturn="False"
+                                 KeyDown="OnMessageKeyDown" />
+                        <Button Grid.Column="1" Content="+" FontSize="20" Padding="12,4">
+                            <Button.Flyout>
+                                <MenuFlyout>
+                                    <MenuItem Header="文件" Click="OnSendFileClick" />
+                                    <MenuItem Header="文件夹" Click="OnSendFolderClick" />
+                                    <MenuItem Header="剪贴板" Click="OnSendClipboardClick" />
+                                </MenuFlyout>
+                            </Button.Flyout>
+                        </Button>
+                        <Button Grid.Column="2" Content="发送" Margin="8,0,0,0"
+                                Command="{Binding SendMessageCommand}" />
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>
